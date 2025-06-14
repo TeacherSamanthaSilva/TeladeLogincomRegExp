@@ -1,0 +1,157 @@
+<!-- RegExp (ou expressão regular) é uma forma de procurar padrões dentro de textos. Em JavaScript, usamos expressões regulares para verificar se uma string segue um certo formato. -->
+
+<!-- regexEmail: garante que o e-mail tenha formato como exemplo@dominio.com.
+
+regexNumero: verifica se a senha tem pelo menos um número.
+
+regexMaiuscula: verifica se há pelo menos uma letra maiúscula.
+
+A senha também é validada para ter mínimo de 6 caracteres. -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulário com Validação ao Digitar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      margin-top: 15px;
+      display: block;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .mensagem-campo {
+      font-size: 14px;
+      margin-top: 5px;
+      color: #e74c3c;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .mensagem-sucesso {
+      margin-top: 20px;
+      color: #2ecc71;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Cadastro</h2>
+
+    <label for="email">E-mail:</label>
+    <input type="text" id="email">
+    <div id="erro-email" class="mensagem-campo"></div>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha">
+    <div id="erro-senha" class="mensagem-campo"></div>
+
+    <button onclick="enviarFormulario()">Enviar</button>
+
+    <div id="mensagem-final" class="mensagem-sucesso"></div>
+  </div>
+
+  <script>
+    const emailInput = document.getElementById("email");
+    const senhaInput = document.getElementById("senha");
+    const erroEmail = document.getElementById("erro-email");
+    const erroSenha = document.getElementById("erro-senha");
+    const mensagemFinal = document.getElementById("mensagem-final");
+
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regexNumero = /[0-9]/;
+    const regexMaiuscula = /[A-Z]/;
+
+    emailInput.addEventListener("input", validarEmail);
+    senhaInput.addEventListener("input", validarSenha);
+
+    function validarEmail() {
+      const email = emailInput.value;
+      if (!regexEmail.test(email)) {
+        erroEmail.textContent = "E-mail inválido. Ex: exemplo@email.com";
+        return false;
+      } else {
+        erroEmail.textContent = "";
+        return true;
+      }
+    }
+
+    function validarSenha() {
+      const senha = senhaInput.value;
+
+      if (senha.length < 6) {
+        erroSenha.textContent = "A senha deve ter pelo menos 6 caracteres.";
+        return false;
+      } else if (!regexNumero.test(senha)) {
+        erroSenha.textContent = "A senha deve conter pelo menos 1 número.";
+        return false;
+      } else if (!regexMaiuscula.test(senha)) {
+        erroSenha.textContent = "A senha deve conter pelo menos 1 letra maiúscula.";
+        return false;
+      } else {
+        erroSenha.textContent = "";
+        return true;
+      }
+    }
+
+    function enviarFormulario() {
+      const emailValido = validarEmail();
+      const senhaValida = validarSenha();
+
+      if (emailValido && senhaValida) {
+        mensagemFinal.textContent = "✅ Cadastro realizado com sucesso!";
+      } else {
+        mensagemFinal.textContent = "";
+      }
+    }
+  </script>
+
+</body>
+</html>
